@@ -1,0 +1,4 @@
+{
+  "mongoURI": "mongodb+srv://praveen900528:praveen900528@abovelite-9wfbb.mongodb.net/test?retryWrites=true&w=majority",
+  "jwtToken": "jwtToken"
+}

@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index",
-    "index" : "nodemon index"
+    "index": "nodemon index"
   },
   "author": "praveen",
   "license": "ISC",
@@ -14,7 +14,7 @@
     "config": "^3.2.4",
     "express": "^4.17.1",
     "express-validator": "^6.3.0",
-    "gravator": "^1.0.2",
+    "gravatar": "^1.8.0",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.8.1",
     "request": "^2.88.0"
