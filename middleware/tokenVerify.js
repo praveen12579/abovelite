@@ -9,6 +9,7 @@ if(!token) {
 }
 
 try {
+
 	const decoded = jwt.verify(token, config.get('jwtToken'));
 	req.user = decoded.user;
 	next();
