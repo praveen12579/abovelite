@@ -9,11 +9,17 @@ if(!token) {
 }
 
 try {
-	const decoded = jwt.verify(token, config.get('jwtToken'));
-	req.user = decoded.user;
-	next();
+    jwt.verify(token, config.get('jwtToken'), (error, decoded) => {
+        if (error) {
+            res.status(401).json({ msg: 'Token is not valid' });
+        } else {
+            req.user = decoded.user;
+            next();
+        }
+    });
 } catch (err) {
-	res.status(401).json({message: "wrong token"});
+    console.error('something wrong with auth middleware');
+    res.status(500).json({ msg: 'Server Error chii chii' });
 }
 
 }
