@@ -7,6 +7,7 @@ const config = require('config');
 const tokenVerify = require('../../middleware/tokenVerify');
 const User = require('../../models/User');
 const router = express.Router();
+
 // @route GET api/auth
 // @desc test route
 // @access Public

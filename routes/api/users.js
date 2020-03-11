@@ -54,7 +54,7 @@ router.post('/', [
 		{ expiresIn: 36000},
 		(err, token) => {
 			if(err) throw err;
-			res.send({token});
+			res.json({token});
 		});
 		
 		//console.log(req.body); //have to initialize middleware for body parser
