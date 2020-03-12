@@ -16,14 +16,11 @@ const normalize = require('normalize-url');
 // @access Private
 router.get('/me', tokenVerify, async (req, res) => {
 	try {
-		const profile = await Profile.findOne({user : req.user.id}).populate(
-			'user',
-			['name', 'avatar']
-		);
+		const profile = await Profile.findOne({ user: req.user.id });
 		if(!profile) {
-			return res.status(400).json({msg: 'hum aapke hai kaun'});
+			return res.status(400).json({msg: 'hum hai hi nahi yaha'});
 		}
-		res.json(profile);
+		res.json((profile.populate('user', ['name', 'avatar'])));
 	} catch (err) {
 		console.error(err.message);
 		res.status(500).send(err.message);
