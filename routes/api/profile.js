@@ -5,7 +5,6 @@ const {check, validationResult} = require('express-validator/check');
 const tokenVerify = require('../../middleware/tokenVerify');
 const User = require('../../models/User');
 const Profile = require('../../models/Profile');
-const Post = require('../../models/Post');
 
 const config = require('config');
 const request = require('request');
@@ -128,7 +127,6 @@ router.get('/myProfile', tokenVerify, async (req, res) => {
 router.delete('/', tokenVerify, async (req, res) => {
 	
 	try {
-		await Post.deleteMany({ user: req.user.id });
 		await Profile.findOneAndRemove({user : req.user.id});
 		await User.findOneAndRemove({_id : req.user.id});
 		res.json({msg:'user removed'});
@@ -291,15 +289,9 @@ router.put(
 router.delete('/education/:edu_id', tokenVerify, async (req, res) => {
 	try {
 		const foundProfile = await Profile.findOne({ user: req.user.id });
-		const eduIds = foundProfile.education.map(edu => edu._id.toString());
-		const removeIndex = eduIds.indexOf(req.params.edu_id);
-		if (removeIndex === -1) {
-			return res.status(500).json({ msg: 'Server error' });
-		} else {
-			foundProfile.education.splice(removeIndex, 1);
-			await foundProfile.save();
-			return res.status(200).json(foundProfile);
-		}
+		foundProfile.education = foundProfile.education.filter(edu => edu._id.toString() !== req.params.edu_id);
+		await foundProfile.save();
+		res.status(200).json(foundProfile);
 	} catch (error) {
 		console.error(error);
 		return res.status(500).json({ msg: 'Server error' });
@@ -342,7 +334,8 @@ router.get('/github/:username', (req, res) => {
 // @access   Public
 router.get('/', async (req, res) => {
 	try {
-		const profiles = await Profile.find().populate('user', ['name', 'avatar']);
+		const filterQuery = {};
+		const profiles = await Profile.find(filterQuery).populate('user', ['name', 'avatar']);
 		res.json(profiles);
 	} catch (err) {
 		console.error(err.message);
